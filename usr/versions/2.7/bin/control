@@ -137,6 +137,7 @@ function restart() {
 }
 
 function status() {
+	client_result "Hello"
     res=0
     if [ -f "${OPENSHIFT_REPO_DIR}app.py" ]; then
         output=$(curl -s -m 30 http://$OPENSHIFT_PYTHON_IP:$OPENSHIFT_PYTHON_PORT/ &> /dev/null) || res=1
@@ -213,12 +214,12 @@ else
 	touch system.log
 	cd ../cassandra/conf/
 	sed -ig 's,/var/lib/cassandra,$HOME/app-root/data/cassandra-data,' cassandra.yaml
-	sed -ig 's/127.0.0.1/'$OPENSHIFT_DIY_IP'/g' cassandra.yaml
-	sed -ig 's/localhost/'$OPENSHIFT_DIY_IP'/g' cassandra.yaml	
+	sed -ig 's/127.0.0.1/'$OPENSHIFT_PYTHON_IP'/g' cassandra.yaml
+	sed -ig 's/localhost/'$OPENSHIFT_PYTHON_IP'/g' cassandra.yaml	
 	sed -ig 's,7000,17000,' cassandra.yaml	
 	sed -ig 's,7001,17001,' cassandra.yaml
 	sed -ig 's,9160,19160,' cassandra.yaml
-	sed -ig 's/localhost/'$OPENSHIFT_DIY_IP'/g' cassandra.yaml	
+	sed -ig 's/localhost/'$OPENSHIFT_PYTHON_IP'/g' cassandra.yaml	
 	sed -ig 's,/var/log/cassandra,$HOME/app-root/data/cassandra-data,' log4j-server.properties
 	sed -ig 's,${max_sensible_yg_in_mb}M,256M,' cassandra-env.sh
 	sed -ig 's,${desired_yg_in_mb}M,256M,' cassandra-env.sh
